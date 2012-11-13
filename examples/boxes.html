@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Boxes!</title>
+        <script type="text/javascript" src="../libs/raphael/raphael-2.1.0.js"></script>
+        <script type="text/javascript" src="../dist/marcantonio.js"></script>
+        <script type="text/javascript">
+            var init = function init() {
+                var boxPaths = {
+                    "A": "M 50 50 L 100 50 L 100 100 L 50 100 z",
+                    "B": "M 100 50 L 150 50 L 150 100 L 100 100 z",
+                    "C": "M 50 100 L 100 100 L 100 150 L 50 150 z",
+                    "D": "M 100 100 L 150 100 L 150 150 L 100 150 z"
+                };
+                
+                var drawing = new Marc.Drawing('boxes');
+                var view = drawing.addView('boxes', boxPaths);
+                
+                view.setColors(function(area) {
+                    if (area.name === 'A') {
+                        return '#009';
+                    } else if (area.name === 'B') {
+                        return '#900';
+                    } else if (area.name === 'C') {
+                        return '#090';
+                    } else {
+                        return '#909';
+                    }
+                });
+                view.setStrokes(function(area) {
+                    return '#ccc';
+                });
+            };
+            
+            if (window.addEventListener) {
+                window.addEventListener('load', init, false);
+            } else if (window.attachEvent) {
+                window.attachEvent('onload', init);
+            }
+        </script>
+        <style type="text/css">
+            #boxes {
+                height: 200px;
+                width: 200px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="boxes"></div>
+    </body>
+</html>
