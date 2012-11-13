@@ -1,0 +1,28 @@
+{
+  "name": "marcantonio",
+  "title": "Marcantonio.js",
+  "description": "Simpler infographic interactions with Raphaël",
+  "version": "0.1.0",
+  "homepage": "https://github.com/myersjustinc/marcantonio",
+  "author": {
+    "name": "Justin Myers",
+    "url": "http://www.justinmyers.net/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/myersjustinc/marcantonio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/myersjustinc/marcantonio/issues"
+  },
+  "licenses": [
+    {
+      "type": "BSD",
+      "url": "https://github.com/myersjustinc/marcantonio/blob/master/LICENSE.md"
+    }
+  ],
+  "dependencies": {
+    "jquery": "1.8.2"
+  },
+  "keywords": ["raphael", "svg", "vml", "infographic", "drawing", "dataviz"]
+}
