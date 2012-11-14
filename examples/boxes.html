@@ -32,7 +32,12 @@
                 });
                 
                 view.addEvents('click', function(area) {
-                    alert("This is area " + area.name + "!");
+                    alert('This is area ' + area.name + '!');
+                });
+                
+                view.addTooltips(function(area) {
+                    if (area.name === 'D') {return false;}
+                    return 'Hello from area ' + area.name + '.';
                 });
             };
             
@@ -46,6 +51,13 @@
             #boxes {
                 height: 200px;
                 width: 200px;
+            }
+            
+            #marcantonio-tooltip {
+                background-color: #fff;
+                border: 1px solid #000;
+                padding: 0.5em;
+                width: 5em;
             }
         </style>
     </head>
