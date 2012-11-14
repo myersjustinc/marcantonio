@@ -5,7 +5,7 @@
     window.Marc = Marc;
     
     Marc.R = window.Raphael;
-    Marc.valueKey = 'marc-value';
+    Marc.valueKey = 'marcantonio-value';
     
     Marc.Drawing = function Drawing(container) {
         var self = this;
