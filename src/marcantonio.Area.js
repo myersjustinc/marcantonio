@@ -25,23 +25,6 @@
             self.element.attr('stroke', newStroke);
         };
         
-        /********** Data handling, including primary values ******************/
-        this.data = function data() {
-            return this.element.data.apply(this.element, arguments);
-        };
-        this.removeData = function removeData() {
-            return this.element.removeData.apply(this.element, arguments);
-        };
-        this.setValue = function setValue(value) {
-            self.data(Marc.valueKey, value);
-        };
-        this.unsetValue = function unsetValue(value) {
-            self.removeData(Marc.valueKey);
-        };
-        this.getValue = function getValue() {
-            return self.data(Marc.valueKey);
-        };
-        
         /********************** Event handling *******************************/
         var handlers = {};
         this.addEvent = function addEvent(eventName, eventHandler) {

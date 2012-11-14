@@ -61,34 +61,6 @@
             }
         };
         
-        /***************** Handle data for all areas *************************/
-        this.setValues = function setValues(newValues) {
-            for (var areaName in self.areas) {
-                if (self.areas.hasOwnProperty(areaName)) {
-                    var area = self.areas[areaName];
-                    area.setValue(newValues[areaName]);
-                }
-            }
-        };
-        this.unsetValues = function unsetValues(value) {
-            for (var areaName in self.areas) {
-                if (self.areas.hasOwnProperty(areaName)) {
-                    var area = self.areas[areaName];
-                    area.unsetValue();
-                }
-            }
-        };
-        this.getValues = function getValues() {
-            var values = {};
-            for (var areaName in self.areas) {
-                if (self.areas.hasOwnProperty(areaName)) {
-                    var area = self.areas[areaName];
-                    values[areaName] = area.getValue();
-                }
-            }
-            return values;
-        };
-        
         /**************** Event binding for all areas ************************/
         this.addEvents = function addEvents(eventName, eventHandler) {
             for (var areaName in self.areas) {
