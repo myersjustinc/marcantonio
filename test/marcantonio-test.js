@@ -28,8 +28,14 @@
         "C": "M 50 100 L 100 100 L 100 150 L 50 150 z",
         "D": "M 100 100 L 150 100 L 150 150 L 100 150 z"
     };
+    var boxValues = {
+        "A": 5,
+        "B": 50,
+        "C": 500,
+        "D": 5000
+    };
     
-    test("Basic functionality", function() {
+    test('Basic functionality', function() {
         $('<div id="boxes"></div>').appendTo('#qunit-fixture');
         var drawing = new Marc.Drawing('boxes');
         var view = drawing.addView('boxes', boxPaths);
@@ -42,7 +48,7 @@
             'Area exists on drawing');
     });
     
-    test("Coloring paths", function() {
+    test('Coloring paths', function() {
         $('<div id="boxes"></div>').appendTo('#qunit-fixture');
         var view = new Marc.Drawing('boxes').addView('boxes', boxPaths);
         var areaA = view.areas['A'];
@@ -68,7 +74,7 @@
             'Area stroke set properly');
     });
     
-    test("Binding events", function() {
+    test('Binding events', function() {
         $('<div id="boxes"></div>').appendTo('#qunit-fixture');
         var view = new Marc.Drawing('boxes').addView('boxes', boxPaths);
         var areaA = view.areas['A'];
@@ -93,5 +99,25 @@
         handlerResult = null;
         areaA.element.node.dispatchEvent(clickEvent);
         equal(handlerResult, null, 'Click handler removed properly');
+    });
+    
+    test('Handling values', function() {
+        $('<div id="boxes"></div>').appendTo('#qunit-fixture');
+        var view = new Marc.Drawing('boxes').addView('boxes', boxPaths);
+        var areaA = view.areas['A'];
+        
+        var initialValues = view.getValues();
+        strictEqual(initialValues['A'], undefined,
+            'Values start off undefined');
+        
+        view.setValues(boxValues);
+        var newValues = view.getValues();
+        strictEqual(newValues['A'], areaA.element.data(Marc.valueKey),
+            'Values report properly');
+        strictEqual(newValues['A'], boxValues['A'], 'Values set properly');
+        
+        view.unsetValues();
+        var finalValues = view.getValues();
+        strictEqual(finalValues['A'], undefined, 'Values unset properly');
     });
 }(this, jQuery, Marc));

@@ -9,6 +9,7 @@
     window.Marc = Marc;
     
     Marc.R = window.Raphael;
+    Marc.valueKey = 'marc-value';
     
     Marc.Drawing = function Drawing(container) {
         var self = this;
@@ -108,6 +109,33 @@
             }
         };
         
+        this.setValues = function setValues(newValues) {
+            for (var areaName in self.areas) {
+                if (self.areas.hasOwnProperty(areaName)) {
+                    var area = self.areas[areaName];
+                    area.setValue(newValues[areaName]);
+                }
+            }
+        };
+        this.unsetValues = function unsetValues(value) {
+            for (var areaName in self.areas) {
+                if (self.areas.hasOwnProperty(areaName)) {
+                    var area = self.areas[areaName];
+                    area.unsetValue();
+                }
+            }
+        };
+        this.getValues = function getValues() {
+            var values = {};
+            for (var areaName in self.areas) {
+                if (self.areas.hasOwnProperty(areaName)) {
+                    var area = self.areas[areaName];
+                    values[areaName] = area.getValue();
+                }
+            }
+            return values;
+        };
+        
         this.addEvents = function addEvents(eventName, eventHandler) {
             for (var areaName in self.areas) {
                 if (self.areas.hasOwnProperty(areaName)) {
@@ -145,14 +173,30 @@
             self.element.attr('stroke', newStroke);
         };
         
+        this.data = function data() {
+            return this.element.data.apply(this.element, arguments);
+        };
+        this.removeData = function removeData() {
+            return this.element.removeData.apply(this.element, arguments);
+        };
+        this.setValue = function setValue(value) {
+            self.data(Marc.valueKey, value);
+        };
+        this.unsetValue = function unsetValue(value) {
+            self.removeData(Marc.valueKey);
+        };
+        this.getValue = function getValue() {
+            return self.data(Marc.valueKey);
+        };
+        
         var handlers = {};
         this.addEvent = function addEvent(eventName, eventHandler) {
             if (!handlers[eventName]) {
                 handlers[eventName] = [];
             }
             
-            var newHandler = function() {
-                eventHandler.call(self, self);
+            var newHandler = function(event) {
+                eventHandler.call(self, self, event);
             };
             handlers[eventName].push(newHandler);
             
