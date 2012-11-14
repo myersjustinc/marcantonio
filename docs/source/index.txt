@@ -1,0 +1,22 @@
+##############
+Marcantonio.js
+##############
+
+Marcantonio.js is an abstraction layer for Raphaël_ meant to make it easier to
+quickly create basic interactive graphics.
+
+.. _Raphaël: http://raphaeljs.com/
+
+Adding interactivity to static graphics is especially quick, but for more
+complicated interactions, all of the underlying Raphaël elements are still
+accessible.
+
+.. todo::
+   Keep working on these docs.
+
+Contents:
+
+.. toctree::
+   :maxdepth: 2
+   
+   getting_started

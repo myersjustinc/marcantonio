@@ -1,4 +1,4 @@
-Copyright (c) 2012 Justin Myers.
+Copyright (c) 2012 Justin Myers and other contributors.
 
 All rights reserved.
 
