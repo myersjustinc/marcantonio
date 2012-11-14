@@ -30,6 +30,10 @@
                 view.setStrokes(function(area) {
                     return '#ccc';
                 });
+                
+                view.addEvents('click', function(area) {
+                    alert("This is area " + area.name + "!");
+                });
             };
             
             if (window.addEventListener) {

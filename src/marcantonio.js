@@ -1,14 +1,14 @@
 (function(window) {
     "use strict";
     
-    var $ = window.jQuery;
-    
     var Marc = window.Marc || {};
     window.Marc = Marc;
     
     Marc.R = window.Raphael;
     
     Marc.Drawing = function Drawing(container) {
+        var self = this;
+        
         var contElem;
         if (typeof container === 'string') {
             // container is an element ID
@@ -30,7 +30,7 @@
             if (views[viewName]) {
                 views[viewName].destroy();
             }
-            views[viewName] = new Marc.View(this, pathData);
+            views[viewName] = new Marc.View(self, pathData);
             return views[viewName];
         };
         this.getView = function getView(viewName) {
@@ -46,7 +46,7 @@
         };
         this.showView = function showView(viewName) {
             if (!views[viewName]) {return;}
-            this.hideAllViews();
+            self.hideAllViews();
             views[viewName].show();
         };
     };
@@ -54,6 +54,8 @@
     Marc.View = function View(drawing, pathData) {
         pathData = pathData || {};
         drawing.hideAllViews();
+        
+        var self = this;
         
         this.areas = {};
         for (var pathName in pathData) {
@@ -64,60 +66,110 @@
         }
         
         this.hide = function hide() {
-            for (var areaName in this.areas) {
-                if (this.areas.hasOwnProperty(areaName)) {
-                    this.areas[areaName].element.hide();
+            for (var areaName in self.areas) {
+                if (self.areas.hasOwnProperty(areaName)) {
+                    self.areas[areaName].element.hide();
                 }
             }
         };
         this.show = function show() {
-            for (var areaName in this.areas) {
-                if (this.areas.hasOwnProperty(areaName)) {
-                    this.areas[areaName].element.show();
+            for (var areaName in self.areas) {
+                if (self.areas.hasOwnProperty(areaName)) {
+                    self.areas[areaName].element.show();
                 }
             }
         };
         this.destroy = function destroy() {
-            for (var areaName in this.areas) {
-                if (this.areas.hasOwnProperty(areaName)) {
-                    this.areas[areaName].element.remove();
+            for (var areaName in self.areas) {
+                if (self.areas.hasOwnProperty(areaName)) {
+                    self.areas[areaName].element.remove();
                 }
             }
         };
         
         this.setColors = function setColors(formatter) {
-            for (var areaName in this.areas) {
-                if (this.areas.hasOwnProperty(areaName)) {
-                    var area = this.areas[areaName];
+            for (var areaName in self.areas) {
+                if (self.areas.hasOwnProperty(areaName)) {
+                    var area = self.areas[areaName];
                     area.setFill(formatter(area));
                 }
             }
         };
         this.setStrokes = function setStrokes(formatter) {
-            for (var areaName in this.areas) {
-                if (this.areas.hasOwnProperty(areaName)) {
-                    var area = this.areas[areaName];
+            for (var areaName in self.areas) {
+                if (self.areas.hasOwnProperty(areaName)) {
+                    var area = self.areas[areaName];
                     area.setStroke(formatter(area));
+                }
+            }
+        };
+        
+        this.addEvents = function addEvents(eventName, eventHandler) {
+            for (var areaName in self.areas) {
+                if (self.areas.hasOwnProperty(areaName)) {
+                    var area = self.areas[areaName];
+                    area.addEvent(eventName, eventHandler);
+                }
+            }
+        };
+        this.removeEvents = function removeEvents(eventName) {
+            for (var areaName in self.areas) {
+                if (self.areas.hasOwnProperty(areaName)) {
+                    var area = self.areas[areaName];
+                    area.removeEvent(eventName);
                 }
             }
         };
     };
     
     Marc.Area = function Area(drawing, areaName, pathData) {
+        var self = this;
+        
         this.element = drawing.paper.path(pathData);
         this.name = areaName;
         
         this.getFill = function getFill() {
-            return this.element.attr('fill');
+            return self.element.attr('fill');
         };
         this.setFill = function setFill(newFill) {
-            this.element.attr('fill', newFill);
+            self.element.attr('fill', newFill);
         };
         this.getStroke = function getStroke() {
-            return this.element.attr('stroke');
+            return self.element.attr('stroke');
         };
         this.setStroke = function setStroke(newStroke) {
-            this.element.attr('stroke', newStroke);
+            self.element.attr('stroke', newStroke);
+        };
+        
+        var handlers = {};
+        this.addEvent = function addEvent(eventName, eventHandler) {
+            if (!handlers[eventName]) {
+                handlers[eventName] = [];
+            }
+            
+            var newHandler = function() {
+                eventHandler.call(self, self);
+            };
+            handlers[eventName].push(newHandler);
+            
+            for (var i = 0, len = handlers[eventName].length; i < len; i++) {
+                var handler = handlers[eventName][i];
+                self.element['un' + eventName](handler);
+                self.element[eventName](handler);
+            }
+        };
+        this.removeEvent = function removeEvent(eventName) {
+            if (!handlers[eventName]) {
+                return;
+            }
+            
+            for (var i = 0, len = handlers[eventName].length; i < len; i++) {
+                var handler = handlers[eventName][i];
+                self.element['un' + eventName](handler);
+            }
+            
+            handlers[eventName] = handlers[eventName].splice(
+                handlers[eventName].length);
         };
     };
 }(this));

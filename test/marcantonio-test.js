@@ -2,7 +2,7 @@
 /*global start:false, stop:false ok:false, equal:false, notEqual:false, deepEqual:false*/
 /*global notDeepEqual:false, strictEqual:false, notStrictEqual:false, raises:false*/
 /*global Marc:false*/
-(function($, Marc) {
+(function(window, $, Marc) {
     /*
         ======== A Handy Little QUnit Reference ========
         http://docs.jquery.com/QUnit
@@ -38,7 +38,8 @@
         ok(drawing, 'Drawing object exists');
         ok(view, 'View object exists');
         ok(areaA, 'Area object exists');
-        deepEqual(areaA.element.paper, drawing.paper, 'Area exists on drawing');
+        deepEqual(areaA.element.paper, drawing.paper,
+            'Area exists on drawing');
     });
     
     test("Coloring paths", function() {
@@ -66,4 +67,31 @@
         deepEqual(Marc.R.getRGB(areaA.getStroke()), Marc.R.getRGB('#ccc'),
             'Area stroke set properly');
     });
-}(jQuery, Marc));
+    
+    test("Binding events", function() {
+        $('<div id="boxes"></div>').appendTo('#qunit-fixture');
+        var view = new Marc.Drawing('boxes').addView('boxes', boxPaths);
+        var areaA = view.areas['A'];
+        var areaB = view.areas['B'];
+        
+        var handlerResult = null;
+        
+        var clickEvent = window.document.createEvent('SVGEvents');
+        clickEvent.initEvent('click', true, true);
+        
+        view.addEvents('click', function(area) {
+            handlerResult = 'This is area ' + area.name + '!';
+        });
+        areaA.element.node.dispatchEvent(clickEvent);
+        equal(handlerResult, 'This is area A!',
+            'Click handler bound properly');
+        areaB.element.node.dispatchEvent(clickEvent);
+        equal(handlerResult, 'This is area B!',
+            'Different click handlers act differently');
+        
+        view.removeEvents('click');
+        handlerResult = null;
+        areaA.element.node.dispatchEvent(clickEvent);
+        equal(handlerResult, null, 'Click handler removed properly');
+    });
+}(this, jQuery, Marc));
