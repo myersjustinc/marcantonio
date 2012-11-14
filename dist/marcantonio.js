@@ -9,11 +9,13 @@
     window.Marc = Marc;
     
     Marc.R = window.Raphael;
-    Marc.valueKey = 'marc-value';
+    Marc.valueKey = 'marcantonio-value';
     
+    /************************** Overall canvas *******************************/
     Marc.Drawing = function Drawing(container) {
         var self = this;
         
+        /************** Find element to pass to Raphaël **********************/
         var contElem;
         if (typeof container === 'string') {
             // container is an element ID
@@ -30,6 +32,7 @@
         
         this.paper = Marc.R(contElem);
         
+        /*********************** View handling *******************************/
         var views = {};
         this.addView = function addView(viewName, pathData) {
             if (views[viewName]) {
@@ -56,12 +59,14 @@
         };
     };
     
+    /********* Individual view (image); Drawing can have several *************/
     Marc.View = function View(drawing, pathData) {
         pathData = pathData || {};
         drawing.hideAllViews();
         
         var self = this;
         
+        /******************* Render paths (areas) ****************************/
         this.areas = {};
         for (var pathName in pathData) {
             if (pathData.hasOwnProperty(pathName)) {
@@ -70,6 +75,7 @@
             }
         }
         
+        /****************** Change view visibility ***************************/
         this.hide = function hide() {
             for (var areaName in self.areas) {
                 if (self.areas.hasOwnProperty(areaName)) {
@@ -92,6 +98,7 @@
             }
         };
         
+        /**************** Set all areas' fill/stroke *************************/
         this.setColors = function setColors(formatter) {
             for (var areaName in self.areas) {
                 if (self.areas.hasOwnProperty(areaName)) {
@@ -109,6 +116,7 @@
             }
         };
         
+        /***************** Handle data for all areas *************************/
         this.setValues = function setValues(newValues) {
             for (var areaName in self.areas) {
                 if (self.areas.hasOwnProperty(areaName)) {
@@ -136,6 +144,7 @@
             return values;
         };
         
+        /**************** Event binding for all areas ************************/
         this.addEvents = function addEvents(eventName, eventHandler) {
             for (var areaName in self.areas) {
                 if (self.areas.hasOwnProperty(areaName)) {
@@ -154,12 +163,14 @@
         };
     };
     
+    /****************** Individual shape within a view ***********************/
     Marc.Area = function Area(drawing, areaName, pathData) {
         var self = this;
         
         this.element = drawing.paper.path(pathData);
         this.name = areaName;
         
+        /********************** Fill and stroke ******************************/
         this.getFill = function getFill() {
             return self.element.attr('fill');
         };
@@ -173,6 +184,7 @@
             self.element.attr('stroke', newStroke);
         };
         
+        /********** Data handling, including primary values ******************/
         this.data = function data() {
             return this.element.data.apply(this.element, arguments);
         };
@@ -189,6 +201,7 @@
             return self.data(Marc.valueKey);
         };
         
+        /********************** Event handling *******************************/
         var handlers = {};
         this.addEvent = function addEvent(eventName, eventHandler) {
             if (!handlers[eventName]) {
