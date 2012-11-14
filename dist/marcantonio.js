@@ -8,6 +8,16 @@
     var Marc = window.Marc || {};
     window.Marc = Marc;
     
+    Marc.R = window.Raphael;
+    Marc.valueKey = 'marcantonio-value';
+}(this));
+
+(function(window) {
+    "use strict";
+    
+    var Marc = window.Marc || {};
+    window.Marc = Marc;
+    
     /****************** Individual shape within a view ***********************/
     Marc.Area = function Area(drawing, areaName, pathData) {
         var self = this;
@@ -78,16 +88,6 @@
                 handlers[eventName].length);
         };
     };
-}(this));
-
-(function(window) {
-    "use strict";
-    
-    var Marc = window.Marc || {};
-    window.Marc = Marc;
-    
-    Marc.R = window.Raphael;
-    Marc.valueKey = 'marcantonio-value';
 }(this));
 
 (function(window) {

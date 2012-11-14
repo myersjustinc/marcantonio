@@ -8,7 +8,7 @@ module.exports = function(grunt) {
         },
         concat: {
             dist: {
-                src: ['<banner:meta.banner>', 'src/**/*.js'],
+                src: ['<banner:meta.banner>', 'src/marcantonio.core.js', 'src/**/*.js'],
                 dest: 'dist/<%= pkg.name %>.js'
             }
         },
