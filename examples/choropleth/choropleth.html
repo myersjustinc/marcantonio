@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Choropleth maps</title>
+        <script type="text/javascript" src="../../libs/raphael/raphael-2.1.0.js"></script>
+        <script type="text/javascript" src="../../dist/marcantonio.js"></script>
+        
+        <!-- The SVG path data for the states and Missouri counties live in a separate file to keep this one readable. -->
+        <script type="text/javascript" src="choropleth-views.js"></script>
+        <!-- So do the population density figures. -->
+        <script type="text/javascript" src="choropleth-data.js"></script>
+        
+        <script type="text/javascript">
+            var init = function init() {
+                // Get a drawing ready at #map
+                var drawing = new Marc.Drawing('map');
+                
+                // Draw the United States...
+                var usView = drawing.addView('us', usPathData);
+                
+                // ...color by population density...
+                usView.setValues(usValues);
+                usView.setColors(function(area) {
+                    var areaValue = area.getValue();
+                    
+                    if (areaValue <= 5.9) {
+                        return '#f7fbff';
+                    } else if (areaValue <= 17.6) {
+                        return '#deebf7';
+                    } else if (areaValue <= 30.7) {
+                        return '#c6dbef';
+                    } else if (areaValue <= 46.6) {
+                        return '#9ecae1';
+                    } else if (areaValue <= 72.7) {
+                        return '#6baed6';
+                    } else if (areaValue <= 129.4) {
+                        return '#4292c6';
+                    } else if (areaValue <= 366.5) {
+                        return '#2171b5';
+                    } else if (areaValue <= 70000) {
+                        return '#084594';
+                    } else {
+                        return '#f7f5f5';
+                    }
+                });
+                usView.setStrokes(function(area) {
+                    return '#b2b4b3';
+                });
+                
+                // ...add tooltips...
+                usView.addTooltips(function(area) {
+                    return (area.name + ': ' + area.getValue() +
+                        ' people per square mile');
+                });
+                
+                // ...and add a click handler.
+                usView.addEvents('click', function(area) {
+                    if (area.name === 'Missouri') {
+                        drawing.showView('mo');
+                        
+                        var showUSLink = document.getElementById('show-us');
+                        if (showUSLink) {
+                            showUSLink.style.display = 'block';
+                        }
+                    } else {
+                        alert('Hello from ' + area.name + '!');
+                    }
+                });
+                
+                // Meanwhile, draw Missouri...
+                var moView = drawing.addView('mo', moPathData);
+                
+                // ...color by population density with a different scale...
+                moView.setValues(moValues);
+                moView.setColors(function(area) {
+                    var areaValue = area.getValue();
+                    
+                    if (areaValue <= 5.9) {
+                        return '#f7f7f9';
+                    } else if (areaValue <= 17.6) {
+                        return '#e7e1ef';
+                    } else if (areaValue <= 30.7) {
+                        return '#d4b9da';
+                    } else if (areaValue <= 46.6) {
+                        return '#c994c7';
+                    } else if (areaValue <= 72.7) {
+                        return '#df65b0';
+                    } else if (areaValue <= 129.4) {
+                        return '#e7298a';
+                    } else if (areaValue <= 366.5) {
+                        return '#ce1256';
+                    } else if (areaValue <= 70000) {
+                        return '#91003f';
+                    } else {
+                        return '#f7f5f5';
+                    }
+                });
+                moView.setStrokes(function(area) {
+                    return '#b2b4b3';
+                });
+                
+                // ... and add tooltips.
+                moView.addTooltips(function(area) {
+                    return (area.name + ', Mo.: ' + area.getValue() +
+                        ' people per square mile');
+                });
+                
+                // Switch back to the national view.
+                drawing.showView('us');
+                
+                // Add a click handler to #show-us so we can get back to the
+                // national map.
+                var showUSLink = document.getElementById('show-us');
+                var showUSView = function(event) {
+                    drawing.showView('us');
+                    showUSLink.style.display = 'none';
+                    event.preventDefault();
+                };
+                if (showUSLink) {
+                    if (showUSLink.addEventListener) {
+                        showUSLink.addEventListener('click', showUSView, false);
+                    } else if (showUS.attachEvent) {
+                        showUSLink.attachEvent('onclick', showUSView);
+                    }
+                }
+            };
+            
+            if (window.addEventListener) {
+                window.addEventListener('load', init, false);
+            } else if (window.attachEvent) {
+                window.attachEvent('onload', init);
+            }
+        </script>
+        <style type="text/css">
+            #map {
+                height: 486px;
+                width: 768px;
+            }
+            
+            #marcantonio-tooltip {
+                background-color: #fff;
+                border: 1px solid #000;
+                padding: 0.5em;
+                width: 5em;
+            }
+            
+            .view-change a {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <p class="view-change"><a id="show-us" href="#">Show U.S.</a></p>
+    </body>
+</html>
