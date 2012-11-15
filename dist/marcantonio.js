@@ -1,4 +1,4 @@
-/*! Marcantonio.js - v0.1.0 - 2012-11-14
+/*! Marcantonio.js - v0.1.0 - 2012-11-15
  * https://github.com/myersjustinc/marcantonio
  * Copyright (c) 2012 Justin Myers; Licensed BSD */
 
@@ -285,7 +285,7 @@
                 document.body.removeChild(tooltipElem);
             }
         },
-        renderTooltip: function renderTooltip(content) {
+        renderTooltip: function renderTooltip(content, event) {
             Marc.tooltips.removeTooltip();
             
             var tooltipFrag = document.createDocumentFragment();
@@ -299,14 +299,14 @@
                 tooltipFrag.appendChild(tooltipDiv);
                 document.body.appendChild(tooltipFrag);
                 
-                Marc.tooltips.positionTooltip();
+                Marc.tooltips.positionTooltip(null, event);
             }
         }
     };
     
     Marc.View.prototype.addTooltips = function addTooltips(formatter) {
-        var fullyRenderTooltip = function fullyRenderTooltip(area) {
-            Marc.tooltips.renderTooltip(formatter(area));
+        var fullyRenderTooltip = function fullyRenderTooltip(area, event) {
+            Marc.tooltips.renderTooltip(formatter(area), event);
         };
         this.addEvents('mouseover', fullyRenderTooltip);
         this.addEvents('mousemove', Marc.tooltips.positionTooltip);
