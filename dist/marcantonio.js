@@ -1,4 +1,4 @@
-/*! Marcantonio.js - v0.1.0 - 2012-11-15
+/*! Marcantonio.js - v0.1.0 - 2012-11-16
  * https://github.com/myersjustinc/marcantonio
  * Copyright (c) 2012 Justin Myers; Licensed BSD */
 
@@ -275,14 +275,14 @@
             var tooltipElem = document.getElementById(Marc.tooltips.elementId);
             var bodyElem = window.document.getElementsByTagName('body')[0];
             
-            var tooltipHeight = tooltipElem.offsetHeight;
-            var tooltipWidth = tooltipElem.offsetWidth;
-            
-            var bodyHeight = bodyElem.offsetHeight;
-            var bodyWidth = bodyElem.offsetWidth;
-            
             if (tooltipElem && event) {
                 tooltipElem.style.position = 'absolute';
+                
+                var tooltipHeight = tooltipElem.offsetHeight;
+                var tooltipWidth = tooltipElem.offsetWidth;
+                
+                var bodyHeight = bodyElem.offsetHeight;
+                var bodyWidth = bodyElem.offsetWidth;
                 
                 if (event.clientY + 5 + tooltipHeight > bodyHeight) {
                     tooltipElem.style.top = event.clientY - tooltipHeight - 5 + 'px';
