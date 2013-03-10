@@ -1,7 +1,3 @@
-/*! Marcantonio.js - v0.1.0 - 2012-11-16
- * https://github.com/myersjustinc/marcantonio
- * Copyright (c) 2012 Justin Myers; Licensed BSD */
-
 (function(window) {
     "use strict";
     
